@@ -1,6 +1,8 @@
+import 'package:ag_test/src/core/di/injector.dart';
+import 'package:ag_test/src/features/platform_channel/presentation/cubit/platform_channel_cubit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class PlatformChannelPage extends StatelessWidget {
@@ -13,27 +15,28 @@ class PlatformChannelPage extends StatelessWidget {
         centerTitle: true,
         title: const Text('Flutter Platform Channel Example'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await CustomChannel.channel();
-          },
-          child: const Text('Invoke Method'),
+      body: BlocProvider(
+        create: (context) => getIt<PlatformChannelCubit>(),
+        child: BlocBuilder<PlatformChannelCubit, PlatformChannelState>(
+          builder: (context, state) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () =>
+                      context.read<PlatformChannelCubit>().invokeMethod(),
+                  child: const Text('Invoke Method'),
+                ),
+                state.status.maybeWhen(
+                  orElse: () => const SizedBox.shrink(),
+                  success: (message) => Text(state.platformMessage),
+                  error: (error) => Text(error ?? ''),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
-  }
-}
-
-class CustomChannel {
-  static const platform = MethodChannel('com.example.ag_test/custom_channel');
-
-  static Future<void> channel() async {
-    try {
-      final response = await platform.invokeMethod('transmitObject');
-      print('Response from native code: $response');
-    } on PlatformException catch (e) {
-      print('Error transmitting object: ${e.message}');
-    }
   }
 }

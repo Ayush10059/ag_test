@@ -20,46 +20,28 @@ class SearchPage extends StatelessWidget {
         create: (context) => getIt<SearchCubit>(),
         child: BlocBuilder<SearchCubit, SearchState>(
           builder: (context, state) {
-            return state.status.maybeWhen(
-              orElse: () => Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      helperText: '',
-                      alignLabelWithHint: true,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12),
-                        child: Icon(Icons.search),
-                      ),
+            return Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    helperText: '',
+                    alignLabelWithHint: true,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 12, right: 12),
+                      child: Icon(Icons.search),
                     ),
-                    onChanged: context.read<SearchCubit>().onSearchChanged,
                   ),
-                  ElevatedButton(
-                    child: const Text('Search'),
-                    onPressed: () => context.read<SearchCubit>().search(),
-                  ),
-                ],
-              ),
-              success: (message) => Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      helperText: '',
-                      alignLabelWithHint: true,
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12),
-                        child: Icon(Icons.search),
-                      ),
-                    ),
-                    onChanged: context.read<SearchCubit>().onSearchChanged,
-                  ),
-                  ElevatedButton(
-                    child: const Text('Search'),
-                    onPressed: () => context.read<SearchCubit>().search(),
-                  ),
-                  Text(state.path)
-                ],
-              ),
+                  onChanged: context.read<SearchCubit>().onSearchChanged,
+                ),
+                ElevatedButton(
+                  child: const Text('Search'),
+                  onPressed: () => context.read<SearchCubit>().search(),
+                ),
+                state.status.maybeWhen(
+                  orElse: () => const SizedBox.shrink(),
+                  success: (message) => Text(state.path),
+                ),
+              ],
             );
           },
         ),

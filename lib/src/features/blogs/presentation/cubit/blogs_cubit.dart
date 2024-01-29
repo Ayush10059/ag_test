@@ -19,26 +19,27 @@ class BlogsCubit extends BaseCubit<BlogsState> {
     state.blogsPagingController.addPageRequestListener(
       (pageKey) {
         handleBusinessLogic(
-            call: _repository.getBlogs(),
-            onSuccess: (blogResponseModel) {
-              if (blogResponseModel.meta.currentPage <
-                  blogResponseModel.meta.lastPage) {
-                state.blogsPagingController.appendPage(blogResponseModel.data,
-                    state.blogsPagingController.nextPageKey! + 1);
-              } else if (blogResponseModel.meta.currentPage ==
-                  blogResponseModel.meta.lastPage) {
-                state.blogsPagingController
-                    .appendLastPage(blogResponseModel.data);
-              }
+          call: _repository.getBlogs(),
+          onSuccess: (blogResponseModel) {
+            if (blogResponseModel.meta.currentPage <
+                blogResponseModel.meta.lastPage) {
+              state.blogsPagingController.appendPage(blogResponseModel.data,
+                  state.blogsPagingController.nextPageKey! + 1);
+            } else if (blogResponseModel.meta.currentPage ==
+                blogResponseModel.meta.lastPage) {
+              state.blogsPagingController
+                  .appendLastPage(blogResponseModel.data);
+            }
 
-              return state.copyWith(
-                  blogsPagingStatus: const FormStatus.success());
-            },
-            onFailure: (error) {
-              state.blogsPagingController.error = error;
-              return state.copyWith(
-                  blogsPagingStatus: FormStatus.error(error: error));
-            });
+            return state.copyWith(
+                blogsPagingStatus: const FormStatus.success());
+          },
+          onFailure: (error) {
+            state.blogsPagingController.error = error;
+            return state.copyWith(
+                blogsPagingStatus: FormStatus.error(error: error));
+          },
+        );
       },
     );
   }
