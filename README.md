@@ -1,30 +1,28 @@
 # ag_test
 
-A new Flutter project.
+A test project for Ambition Guru Tech Interview.
+
+# Please ensure to run the following commands:
+
+## Code generation for utilities (Routes,Model,Blocs)
+
+flutter pub run build_runner watch --delete-conflicting-outputs
+
+##  Generate localized strings
+
+flutter pub global activate intl_utils (if not activated previously)
+flutter pub global run intl_utils:generate
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Assets
-
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
-
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
+This project is a starting point for a Flutter application that has the following task:
+1. Blog fetching wiht RESTful api.
+2. Search a json file using DFS and recursion.
+3. Platform Channel to send platform specific message. 
 
 ## Localization
 
 This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
+the `lib/localization/arb` directory.
 
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
